@@ -1,0 +1,41 @@
+version: "3"
+services:
+  web_nodejs:
+    container_name: web_nodejs
+    build: .
+    volumes:
+      - ./:/usr/src/app
+      - vol_nodejs:/usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      POSTGRES_HOST: root:password@postgres:5432
+      PORT: 3000
+
+    depends_on:
+      - db_postgres
+    links:
+      - db_postgres
+
+  db_postgres:
+    container_name: postgres
+    restart: always
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: heroes
+
+  adminer:
+    image: adminer:4.6
+    container_name: adminer
+    ports:
+      - 8080:8080
+    depends_on:
+      - db_postgres
+
+volumes:
+  vol_nodejs:
+    driver: local
