@@ -1,11 +1,23 @@
-FROM node:8-alpine
+FROM node:8.15.0
 
-ADD . src/
+ENV APP_ROOT /usr/src/app
+ENV TZ=Asia/Tokyo
 
-WORKDIR /src
+# Create app directory
+WORKDIR $APP_ROOT
 
-RUN npm i -g nodemon
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
-RUN npm i 
+RUN npm install -g nodemon
+RUN npm install
+# If you are building your code for production
+# RUN npm install --only=production
 
-CMD npm start
+# Bundle app source
+COPY . $APP_ROOT
+
+EXPOSE 3000
+CMD [ "npm", "start" ]

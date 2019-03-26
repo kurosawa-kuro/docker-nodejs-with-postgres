@@ -24,12 +24,10 @@ const Sequelize = require("sequelize");
 
   await Hero.sync({ force: true });
   var payload = {
-    id: 1,
     name: "kuro",
     power: "pg"
   };
 
   Hero.create(payload);
   console.log("fin");
-  console.log("fin3");
 })();
